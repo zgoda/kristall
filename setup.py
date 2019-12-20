@@ -2,49 +2,97 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
-from os import path
+import codecs
 import re
+from os import path
 
-from setuptools import setup, find_packages
-
-PKG_NAME = 'kristall'
-
+from setuptools import find_packages, setup
 
 here = path.abspath(path.dirname(__file__))
 
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+
+def read(*parts):
+    with codecs.open(path.join(here, *parts), 'r') as fp:
+        return fp.read()
 
 
-def get_metadata():
-    metadata_file = path.join(here, 'src', PKG_NAME, '_metadata.py')
-    with open(metadata_file) as fp:
-        content = fp.read()
-        return dict(re.findall(r"__([a-z]+)__\s*=\s*'([^']+)'", content))
+def find_version(*file_paths):
+    version_file = read(*file_paths)
+    version_match = re.search(
+        r"^__version = ['\"]([^'\"]*)['\"]",
+        version_file,
+        re.M,
+    )
+    if version_match:
+        return version_match.group(1)
+    raise RuntimeError('Unable to find version string.')
 
 
-metadata = get_metadata()
+long_description = read('README.md')
+
+base_reqs = [
+    'Werkzeug',
+    'Click',
+]
+
+test_reqs = [
+    'pytest',
+    'pytest-cov',
+]
+
+dev_reqs = test_reqs + [
+    'pip',
+    'setuptools',
+    'wheel',
+    'ipython',
+    'ipdb',
+    'watchdog',
+    'termcolor',
+    'flake8',
+    'flake8-builtins',
+    'flake8-bugbear',
+    'flake8-mutable',
+    'flake8-comprehensions',
+    'pep8-naming',
+    'dlint',
+    'towncrier',
+    'Sphinx',
+    'sphinx-autodoc-typehints',
+    'python-dotenv',
+]
 
 
 setup(
-    name=PKG_NAME,
-    description=metadata['description'],
-    version=metadata['version'],
-    author=metadata['author'],
-    author_email=metadata['authoremail'],
-    url=metadata['url'],
+    name='kristall',
+    description='Lightweight web framework for building APIs and backends',
+    version=find_version('src', 'kristall', '_version.py'),
+    author='Jarek Zgoda',
+    author_email='jarek.zgoda@gmail.com',
+    url='https://github.com/zgoda/kristall',
     long_description=long_description,
     long_description_content_type='text/markdown',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
-    python_requires='~=3.5',
+    python_requires='~=3.7',
     zip_safe=False,
-    install_requires=[
-        'Werkzeug',
+    install_requires=base_reqs,
+    tests_require=test_reqs,
+    extras_require={
+        'dev': dev_reqs,
+    },
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Environment :: Web Environment',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: POSIX :: Linux',
+        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: Implementation :: CPython',
+        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        'Topic :: Internet :: WWW/HTTP :: WSGI :: Application',
+        'Typing :: Typed',
     ],
-    tests_require=[
-        'pytest',
-        'pytest-cov',
-    ]
 )
