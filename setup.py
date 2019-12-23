@@ -1,7 +1,3 @@
-# Copyright 2019 Jarek Zgoda. All rights reserved.
-# Use of this source code is governed by a BSD-style
-# license that can be found in the LICENSE file.
-
 import codecs
 import re
 from os import path
@@ -28,7 +24,7 @@ def find_version(*file_paths):
     raise RuntimeError('Unable to find version string.')
 
 
-long_description = read('README.md')
+long_description = read('README.rst')
 
 base_reqs = [
     'Werkzeug',
@@ -59,6 +55,7 @@ dev_reqs = test_reqs + [
     'Sphinx',
     'sphinx-autodoc-typehints',
     'python-dotenv',
+    'doc8',
 ]
 
 
@@ -70,7 +67,6 @@ setup(
     author_email='jarek.zgoda@gmail.com',
     url='https://github.com/zgoda/kristall',
     long_description=long_description,
-    long_description_content_type='text/markdown',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
