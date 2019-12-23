@@ -35,7 +35,9 @@ class Application:
         result = handler(request, **values)
         if isinstance(result, Response):
             return result
-        return Response(json.dumps(result))
+        if isinstance(result, str):
+            return Response(result, mimetype='application/json')
+        return Response(json.dumps(result), mimetype='application/json')
 
     def wsgi_app(self, environ: dict, start_response: Callable):
         request = Request(environ)

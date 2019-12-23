@@ -1,16 +1,25 @@
+import json
+
 from kristall.application import Application
 from werkzeug.serving import run_simple
 
 
-class Resource:
+class Resource1:
 
     def get(self, request):
         return {'message': 'Hi there'}
 
 
+class Resource2:
+
+    def get(self, request):
+        return json.dumps({'message': 'Hi there'})
+
+
 def make_app():
     app = Application()
-    app.add_resource('/hello', Resource())
+    app.add_resource('/hello1', Resource1())
+    app.add_resource('/hello2', Resource2())
     return app
 
 
