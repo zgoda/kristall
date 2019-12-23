@@ -15,3 +15,12 @@ done at all.
 But since not everything sucks in Falcon I'd grab some ideas, like resourceful
 routing without need to subclass specific ``Resource`` base class, or only
 static route registration.
+
+What
+----
+
+* resourceful routing
+* static route registration
+* only JSON content type supported
+
+That's it for now.
