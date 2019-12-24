@@ -69,7 +69,7 @@ class Application:
             return e
 
     def wsgi_app(self, environ: dict, start_response: Callable):
-        request = Request(environ)
+        request = Request(environ, self.json_decoder)
         response = self.dispatch(request)
         return response(environ, start_response)
 

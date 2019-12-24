@@ -16,10 +16,18 @@ class Resource2:
         return json.dumps({'message': 'Hi there'})
 
 
+class Resource3:
+
+    def post(self, request):
+        data = request.get_json()
+        return data
+
+
 def make_app():
     app = Application()
     app.add_resource('/hello1', Resource1())
     app.add_resource('/hello2', Resource2())
+    app.add_resource('/hello3', Resource3())
     return app
 
 

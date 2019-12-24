@@ -43,7 +43,9 @@ What not
 * no fancy JSON de/encoding, only builtin :mod:`json` is used in default JSON
   handling - use schema parsing/validating library eg.
   `Marshmallow <https://marshmallow.readthedocs.io/en/stable/>`_ or
-  `Colander <https://docs.pylonsproject.org/projects/colander/en/stable/>`_
+  `Colander <https://docs.pylonsproject.org/projects/colander/en/stable/>`_;
+  this may be customised to some degree by providing JSON decoder and encoder
+  classes
 
 How
 ---
