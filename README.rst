@@ -43,9 +43,9 @@ What not
 * no fancy JSON de/encoding, only builtin :mod:`json` is used in default JSON
   handling - use schema parsing/validating library eg.
   `Marshmallow <https://marshmallow.readthedocs.io/en/stable/>`_ or
-  `Colander <https://docs.pylonsproject.org/projects/colander/en/stable/>`_;
-  this may be customised to some degree by providing JSON decoder and encoder
-  classes
+  `Colander <https://docs.pylonsproject.org/projects/colander/en/stable/>`_ if
+  you need anything beyond that; default behaviour may be customised to some
+  degree by providing JSON decoder and encoder classes
 
 How
 ---
@@ -54,7 +54,8 @@ Really very thin wrapper over Werkzeug utility functions and classes.
 Seriously, I'm not calling this *a framework*. Not yet. It consists of
 ``Application`` class that's and entry point to runtime and
 ``Request``/``Response`` objects that in fact are Werkzeug's built in
-wrappers reconfigured to support only JSON as transport media.
+wrappers reconfigured to support only JSON as transport media with some
+convenience methods.
 
 Runtime dependencies
 --------------------

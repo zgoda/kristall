@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Kristall'
-copyright = '2019, Jarek Zgoda'
+copyright = '2019, Jarek Zgoda'  # noqa: A001
 author = 'Jarek Zgoda'
 
 version = '1.0'
@@ -38,7 +38,8 @@ extensions = [
 
 intesphinx_mapping = {
     'python': ['https://docs/python.org/3', None],
-    'werkzeug': ['https://werkzeug.palletsprojects.com/en/0.15.x/', None],
+    'werkzeug': ['https://werkzeug.palletsprojects.com/en/0.16.x/', None],
+    'click': ['https://click.palletsprojects.com/en/7.x/', None],
 }
 
 # Add any paths that contain templates here, relative to this directory.
