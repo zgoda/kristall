@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import { Link } from 'preact-router/match';
 import style from './style';
 
 class Home extends Component {
@@ -14,7 +15,8 @@ class Home extends Component {
   render() {
     const items = [];
     for (const [index, poll] of this.state.polls.entries()) {
-      items.push(<li key={index}>{poll.title}</li>)
+      const poll_url = `/poll/${poll.poll_id}`;
+      items.push(<li key={index}><Link activeClassName="active" href={poll_url}>{poll.title}</Link></li>)
     }
     return (
       <div class={style.home}>
