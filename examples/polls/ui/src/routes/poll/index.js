@@ -13,14 +13,23 @@ class Poll extends Component {
 
   render() {
     let title;
+    const options = [];
     if (this.state.poll) {
       title = <h1>{this.state.poll.title}</h1>
+      if (this.state.poll.options) {
+        for (const [index, option] of this.state.poll.options.entries()) {
+          options.push(<li key={index}>{option.name}</li>)
+        }
+      }
     } else {
       title = <h1>Poll</h1>
     }
     return (
       <div class={style.poll}>
         {title}
+        <ul>
+          {options}
+        </ul>
       </div>
     )
   };
