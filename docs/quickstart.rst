@@ -15,3 +15,5 @@ The most straightforward way is to use ``pip`` and install from PyPI:
     source venv/bin/activate
     pip install -U pip wheel
     pip install -U kristall
+
+Once installed you may want to look at examples.

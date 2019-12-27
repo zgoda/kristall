@@ -7,6 +7,7 @@ from werkzeug.exceptions import NotFound
 
 from kristall.request import Request
 from kristall.response import Response
+from kristall.utils import url_for
 
 from .models import db
 from .schema import poll_schema
@@ -61,7 +62,14 @@ class PollCollectionResource:
         if not poll.get('close_dt'):
             poll['close_dt'] = now + timedelta(days=14)
         db.insert(poll_schema.dump(poll))
-        return Response(status=201, headers={'Location': f'/poll/{poll_id}'})
+        return Response(
+            status=201,
+            headers={
+                'Location': url_for(
+                    'polls.resources.PollItemResource:get', poll_id=poll_id
+                )
+            }
+        )
 
 
 poll_collection = PollCollectionResource()

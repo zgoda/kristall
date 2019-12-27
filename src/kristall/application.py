@@ -5,9 +5,11 @@ from typing import Any, Callable, Optional
 from werkzeug.exceptions import HTTPException
 from werkzeug.routing import Map, Rule
 from werkzeug.wrappers import Response as WerkzeugResponse
+from werkzeug.wsgi import ClosingIterator
 
 from .request import Request
 from .response import Response
+from .utils import local, local_manager
 
 
 class Application:
@@ -18,6 +20,7 @@ class Application:
     json_decoder = json.JSONDecoder
 
     def __init__(self):
+        local.application = self
         self.url_map = Map()
         self._resource_cache = {}
         self._error_handlers = {}
@@ -47,7 +50,7 @@ class Application:
         return Response(msg, status=code)
 
     def dispatch(self, request: Request) -> Response:
-        adapter = self.url_map.bind_to_environ(request.environ)
+        local.url_adapter = adapter = self.url_map.bind_to_environ(request.environ)
         try:
             endpoint, values = adapter.match()
             handler = self._resource_cache[endpoint]
@@ -69,9 +72,11 @@ class Application:
             return e
 
     def wsgi_app(self, environ: dict, start_response: Callable):
-        request = Request(environ, self.json_decoder)
+        local.request = request = Request(environ, self.json_decoder)
         response = self.dispatch(request)
-        return response(environ, start_response)
+        return ClosingIterator(
+            response(environ, start_response), [local_manager.cleanup]
+        )
 
     def __call__(self, environ: dict, start_response: Callable):
         return self.wsgi_app(environ, start_response)

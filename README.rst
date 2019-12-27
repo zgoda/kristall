@@ -9,17 +9,19 @@ than Kristall. I'm happy when it's not slower than Flask.
 Why
 ---
 
-Because framework F1 sucks. And since framework F2 sucks less, I decided to
-build a WSGI application tool that's based on
+Some frameworks suck here, others suck there and none is good at all things
+I want. I decided to build a WSGI application tool that's based on
 `Werkzeug <https://palletsprojects.com/p/werkzeug/>`_ and is simpler than
-framework F2. Sure, there are `Flask <https://palletsprojects.com/p/flask/>`_
-extensions that make writing REST APIs simpler like
+Flask. Sure, there are
+`Flask <https://palletsprojects.com/p/flask/>`_ extensions that make writing
+REST APIs simpler like
 `Flask-RESTFul <https://flask-restful.readthedocs.io/en/latest/>`_ and
 `Flask-RESTPlus <https://flask-restplus.readthedocs.io/en/stable/>`_ but they
 are built on top of Flask and do many extra things that are better done by
-others, or not done at all.
+others, or not done at all. I wanted something that is somewhere in between
+Falcon and Flask. Simplicity of Falcon with convenience of Flask.
 
-But since not everything sucks in framework F1 I'd grab some ideas, like
+But since not everything sucks in Falcon I'd grab some ideas, like
 resourceful routing without need to subclass specific ``Resource`` base class,
 or only static route registration.
 
@@ -32,6 +34,11 @@ What
 * very limited automatic coercion to JSON
 
 That's it for now.
+
+Future developments:
+
+* JWT-based resource access control
+* CORS support
 
 What not
 --------
