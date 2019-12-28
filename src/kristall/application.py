@@ -2,7 +2,7 @@ import inspect
 import json
 from typing import Any, Callable, Optional
 
-from werkzeug.exceptions import HTTPException
+from werkzeug.exceptions import HTTPException, MethodNotAllowed
 from werkzeug.routing import Map, Rule
 from werkzeug.wrappers import Response as WerkzeugResponse
 from werkzeug.wsgi import ClosingIterator
@@ -27,15 +27,18 @@ class Application:
 
     def add_resource(self, path: str, resource: Any):
         res_obj = dict(inspect.getmembers(resource))
+        resource_methods = []
+        resource_class = None
         for method in self.METHODS:
             handler_name = method.lower()
             if handler_name in res_obj:
-                klass = res_obj[handler_name].__self__.__class__
-                mod_name = klass.__module__
-                class_name = klass.__name__
-                endpoint = f'{mod_name}.{class_name}:{handler_name}'
-                self.url_map.add(Rule(path, endpoint=endpoint, methods=[method]))
-                self._resource_cache[endpoint] = res_obj[handler_name]
+                resource_methods.append(method)
+                resource_class = res_obj[handler_name].__self__.__class__
+        mod_name = resource_class.__module__
+        class_name = resource_class.__name__
+        endpoint = f'{mod_name}.{class_name}'
+        self.url_map.add(Rule(path, endpoint=endpoint, methods=resource_methods))
+        self._resource_cache[endpoint] = res_obj
 
     def add_error_handler(self, code: int, handler: Callable, *args, **kwargs):
         self._error_handlers[code] = (handler, args, kwargs)
@@ -53,7 +56,10 @@ class Application:
         local.url_adapter = adapter = self.url_map.bind_to_environ(request.environ)
         try:
             endpoint, values = adapter.match()
-            handler = self._resource_cache[endpoint]
+            resource = self._resource_cache[endpoint]
+            handler = resource.get(request.method.lower())
+            if handler is None:
+                raise MethodNotAllowed()
             result = handler(request, **values)
             if isinstance(result, WerkzeugResponse):
                 return result
