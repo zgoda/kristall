@@ -66,7 +66,7 @@ class PollCollectionResource:
             status=201,
             headers={
                 'Location': url_for(
-                    'polls.resource.PollItemResource:get', poll_id=poll_id
+                    'polls.resource.PollItemResource', poll_id=poll_id
                 )
             }
         )
