@@ -37,7 +37,7 @@ class Application:
                 resource_class = res_obj[handler_name].__self__.__class__
         mod_name = resource_class.__module__
         class_name = resource_class.__name__
-        endpoint = f'{mod_name}.{class_name}'
+        endpoint = getattr(resource, 'endpoint', None) or f'{mod_name}.{class_name}'
         self.url_map.add(Rule(path, endpoint=endpoint, methods=resource_methods))
         self._resource_cache[endpoint] = res_obj
 
