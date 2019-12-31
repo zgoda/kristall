@@ -30,8 +30,7 @@ long_description = read('README.md')
 base_reqs = [
     'Kristall',
     'Marshmallow',
-    'TinyDB',
-    'setuptools',
+    'Pony',
     'python-dotenv',
 ]
 

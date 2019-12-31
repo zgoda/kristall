@@ -108,4 +108,4 @@ venv.bak/
 .idea
 
 # application artifacts
-db.json
+db.sqlite
