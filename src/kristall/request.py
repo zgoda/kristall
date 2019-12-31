@@ -28,7 +28,7 @@ class Request(WRequest):
             )
         return super().get_data(cache, as_text, parse_form_data)
 
-    def get_json(self, decoder=None) -> dict:
+    def get_json(self, decoder: Optional[Any] = None) -> dict:
         if decoder is None:
             decoder = self.decoder
         data = self.get_data()

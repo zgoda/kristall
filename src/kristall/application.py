@@ -1,6 +1,6 @@
 import inspect
 import json
-from typing import Any, Callable, Optional
+from typing import Callable, Iterator, Optional
 
 from werkzeug.exceptions import HTTPException, MethodNotAllowed
 from werkzeug.routing import Map, Rule
@@ -18,14 +18,15 @@ class Application:
 
     json_encoder = json.JSONEncoder
     json_decoder = json.JSONDecoder
+    request_class = Request
+    response_class = Response
 
     def __init__(self):
-        local.application = self
         self.url_map = Map()
         self._resource_cache = {}
         self._error_handlers = {}
 
-    def add_resource(self, path: str, resource: Any):
+    def add_resource(self, path: str, resource: object):
         res_obj = dict(inspect.getmembers(resource))
         resource_methods = []
         resource_class = None
@@ -50,7 +51,7 @@ class Application:
             msg = json.dumps({'message': description})
         else:
             msg = ''
-        return Response(msg, status=code)
+        return self.response_class(msg, status=code)
 
     def dispatch(self, request: Request) -> Response:
         local.url_adapter = adapter = self.url_map.bind_to_environ(request.environ)
@@ -64,8 +65,8 @@ class Application:
             if isinstance(result, WerkzeugResponse):
                 return result
             if isinstance(result, str):
-                return Response(result)
-            return Response(json.dumps(result, cls=self.json_encoder))
+                return self.response_class(result)
+            return self.response_class(json.dumps(result, cls=self.json_encoder))
         except HTTPException as e:
             code = e.code
             if code is not None:
@@ -77,12 +78,12 @@ class Application:
                 return handler(code, description, *args, **kwargs)
             return e
 
-    def wsgi_app(self, environ: dict, start_response: Callable):
-        local.request = request = Request(environ, self.json_decoder)
+    def wsgi_app(self, environ: dict, start_response: Callable) -> Callable:
+        request = self.request_class(environ, self.json_decoder)
         response = self.dispatch(request)
         return ClosingIterator(
             response(environ, start_response), [local_manager.cleanup]
         )
 
-    def __call__(self, environ: dict, start_response: Callable):
+    def __call__(self, environ: dict, start_response: Callable) -> Iterator:
         return self.wsgi_app(environ, start_response)
