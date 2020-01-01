@@ -7,6 +7,7 @@ from werkzeug.wrappers import Response as WerkzeugResponse
 
 from .request import Request
 from .response import Response
+from .utils import endpoint as gen_endpoint
 
 
 class Application:
@@ -19,7 +20,6 @@ class Application:
     response_class = Response
 
     def __init__(self):
-        self.adapter = None
         self.url_map = Map()
         self._resource_cache = {}
         self._error_handlers = {}
@@ -33,9 +33,7 @@ class Application:
                 resource_methods.append(method)
         endpoint = getattr(resource, 'endpoint', None)
         if not endpoint:
-            mname = resource.__class__.__module__
-            cqname = resource.__class__.__qualname__
-            endpoint = f'{mname}.{cqname}'
+            endpoint = gen_endpoint(resource)
         self.url_map.add(Rule(path, endpoint=endpoint, methods=resource_methods))
         self._resource_cache[endpoint] = resource
 
@@ -52,9 +50,9 @@ class Application:
         return self.response_class(msg, status=code)
 
     def dispatch(self, request: Request) -> Response:
-        self.adapter = self.url_map.bind_to_environ(request.environ)
+        adapter = self.url_map.bind_to_environ(request.environ)
         try:
-            endpoint, values = self.adapter.match()
+            endpoint, values = adapter.match()
             resource = self._resource_cache[endpoint]
             try:
                 handler = getattr(resource, request.method.lower())

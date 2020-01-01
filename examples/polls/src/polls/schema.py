@@ -2,22 +2,22 @@ from marshmallow import Schema, fields
 
 
 class VoteSchema(Schema):
-    id = fields.Int(dump_only=True)  # noqa: A003
+    pk = fields.Int(dump_only=True, attribute='id')
     date = fields.DateTime()
 
 
 class OptionSchema(Schema):
-    id = fields.Int(dump_only=True)  # noqa: A003
+    pk = fields.Int(dump_only=True, attribute='id')
     name = fields.String()
     votes = fields.Nested('VoteSchema', only=['date'], many=True, dump_only=True)
 
 
 class PollSchema(Schema):
-    id = fields.Int(dump_only=True)  # noqa: A003
+    pk = fields.Int(dump_only=True, attribute='id')
     title = fields.Str()
     created = fields.DateTime(dump_only=True)
     options = fields.Nested(
-        'OptionSchema', only=['id', 'name'], many=True, dump_only=True
+        'OptionSchema', only=['pk', 'name'], many=True, dump_only=True
     )
 
 
