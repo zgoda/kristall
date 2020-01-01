@@ -1,9 +1,7 @@
-from werkzeug.local import Local, LocalManager
+class ResourceMixin:
 
-
-local = Local()
-local_manager = LocalManager([local])
-
-
-def url_for(endpoint: str, _external: bool = False, **values) -> str:
-    return local.url_adapter.build(endpoint, values, force_external=_external)
+    @property
+    def endpoint(self):
+        mname = self.__class__.__module__
+        cqname = self.__class__.__qualname__
+        return f'{mname}.{cqname}'

@@ -1,15 +1,12 @@
-import inspect
 import json
 from typing import Callable, Iterator, Optional
 
 from werkzeug.exceptions import HTTPException, MethodNotAllowed
 from werkzeug.routing import Map, Rule
 from werkzeug.wrappers import Response as WerkzeugResponse
-from werkzeug.wsgi import ClosingIterator
 
 from .request import Request
 from .response import Response
-from .utils import local, local_manager
 
 
 class Application:
@@ -22,24 +19,25 @@ class Application:
     response_class = Response
 
     def __init__(self):
+        self.adapter = None
         self.url_map = Map()
         self._resource_cache = {}
         self._error_handlers = {}
 
     def add_resource(self, path: str, resource: object):
-        res_obj = dict(inspect.getmembers(resource))
         resource_methods = []
-        resource_class = None
         for method in self.METHODS:
             handler_name = method.lower()
-            if handler_name in res_obj:
+            handler = getattr(resource, handler_name, None)
+            if handler:
                 resource_methods.append(method)
-                resource_class = res_obj[handler_name].__self__.__class__
-        mod_name = resource_class.__module__
-        class_name = resource_class.__name__
-        endpoint = getattr(resource, 'endpoint', None) or f'{mod_name}.{class_name}'
+        endpoint = getattr(resource, 'endpoint', None)
+        if not endpoint:
+            mname = resource.__class__.__module__
+            cqname = resource.__class__.__qualname__
+            endpoint = f'{mname}.{cqname}'
         self.url_map.add(Rule(path, endpoint=endpoint, methods=resource_methods))
-        self._resource_cache[endpoint] = res_obj
+        self._resource_cache[endpoint] = resource
 
     def add_error_handler(self, code: int, handler: Callable, *args, **kwargs):
         self._error_handlers[code] = (handler, args, kwargs)
@@ -54,12 +52,13 @@ class Application:
         return self.response_class(msg, status=code)
 
     def dispatch(self, request: Request) -> Response:
-        local.url_adapter = adapter = self.url_map.bind_to_environ(request.environ)
+        self.adapter = self.url_map.bind_to_environ(request.environ)
         try:
-            endpoint, values = adapter.match()
+            endpoint, values = self.adapter.match()
             resource = self._resource_cache[endpoint]
-            handler = resource.get(request.method.lower())
-            if handler is None:
+            try:
+                handler = getattr(resource, request.method.lower())
+            except AttributeError:
                 raise MethodNotAllowed()
             result = handler(request, **values)
             if isinstance(result, WerkzeugResponse):
@@ -81,9 +80,7 @@ class Application:
     def wsgi_app(self, environ: dict, start_response: Callable) -> Callable:
         request = self.request_class(environ, self.json_decoder)
         response = self.dispatch(request)
-        return ClosingIterator(
-            response(environ, start_response), [local_manager.cleanup]
-        )
+        return response(environ, start_response)
 
     def __call__(self, environ: dict, start_response: Callable) -> Iterator:
         return self.wsgi_app(environ, start_response)
