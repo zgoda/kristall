@@ -67,7 +67,7 @@ class Application:
         except HTTPException as e:
             code = e.code
             if code is not None:
-                description = e.description
+                description = None
                 handler_info = self._error_handlers.get(code)
                 if handler_info is None:
                     return self.default_error_handler(code, description)
