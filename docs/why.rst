@@ -46,6 +46,15 @@ performance issues your 1st companion should be profiler, not new framework.
 But anyway Flask add-ons give you familiar interface at the cost of many
 megabytes wasted for things that you don't use in Web API application.
 
+Of course there are still plenty of others but let's be honest, the boom time
+for Python WSGI frameworks was ~10 years ago and since then most of these
+frameworks became abandonware. Their user base was too small to catch up when
+original creator lost interest in development and in most cases the code lays
+untouched for years on Github. There's something excessively tragic about
+abandoned code and I am sure someone will write a great theatrical drama about
+this. Or even make a block-busting movie but for now let's focus on 2020 state
+of WSGI frameworks for writing REST APIs.
+
 Both Flask add-ons
 (`Flask-RESTFul <https://github.com/flask-restful/flask-restful>`_ and
 `Flask-RESTPlus <https://github.com/noirbizarre/flask-restplus>`_) have all
@@ -70,4 +79,15 @@ everybody.
 
 That's why Kristall is being developed. I want as much Flask in Falcon as I
 could get so there is a Werkzeug based framework with much smaller feature
-set. I hope this is doable.
+set than Flask but on par with Falcon.
+
+Why so minimalistic?
+--------------------
+
+Others will give you more out of the box but Kristall does not pose any limits
+for extending. In fact, I wrote it with extendability in mind. All provided
+classes are supposed to be used as bases for customizations - both
+:class:`~kristall.request.Request` and :class:`~kristall.response.Respose` are
+just thin wrappers over Werkzeug's structures, and
+:class:`~kristall.application.Application` is simple glue over WSGI
+application idea.

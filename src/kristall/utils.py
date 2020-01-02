@@ -1,7 +1,8 @@
 import inspect
+from typing import Type, Union
 
 
-def endpoint(item):
+def endpoint(item: Union[object, Type]) -> str:
     if inspect.isclass(item):
         mname = item.__module__
         cqname = item.__qualname__
