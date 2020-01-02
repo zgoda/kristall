@@ -1,7 +1,9 @@
 Kristall
 ========
 
-Lightweight *web framework* (wink, wink) for building APIs and backends.
+Lightweight *web framework*
+(`wink, wink <https://www.youtube.com/watch?v=dlDXVI6uM78>`_)
+for building APIs and backends.
 Reasonably fast in execution, developer friendly. If you need gazillions of
 requests served by single process in a second then there are better options
 than Kristall. I'm happy when it's not slower than Flask.
