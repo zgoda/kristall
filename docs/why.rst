@@ -87,7 +87,7 @@ Why so minimalistic?
 Others will give you more out of the box but Kristall does not pose any limits
 for extending. In fact, I wrote it with extendability in mind. All provided
 classes are supposed to be used as bases for customizations - both
-:class:`~kristall.request.Request` and :class:`~kristall.response.Respose` are
+:class:`~kristall.request.Request` and :class:`~kristall.response.Response` are
 just thin wrappers over Werkzeug's structures, and
 :class:`~kristall.application.Application` is simple glue over WSGI
 application idea.

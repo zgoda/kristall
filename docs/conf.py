@@ -36,10 +36,9 @@ extensions = [
     'sphinx.ext.intersphinx',
 ]
 
-intesphinx_mapping = {
-    'python': ['https://docs/python.org/3', None],
-    'werkzeug': ['https://werkzeug.palletsprojects.com/en/0.16.x/', None],
-    'click': ['https://click.palletsprojects.com/en/7.x/', None],
+intersphinx_mapping = {
+    'python': ['https://docs.python.org/3', None],
+    'werkzeug': ['https://werkzeug.palletsprojects.com/en/0.16.x/', None]
 }
 
 # Add any paths that contain templates here, relative to this directory.

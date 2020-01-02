@@ -44,9 +44,9 @@ class Application:
     def add_resource(self, path: str, resource: object):
         """Register resource under specified path. The resource is and
         instance that is expected to provide methods that correspond to HTTP
-        words. If the instance provides :ivar:`endpoint` the it will be used
-        as endpoint name, otherwise it will be registered under the name that
-        is it's class dotted path.
+        words. If the instance provides :attr:`endpoint` attribute the it will
+        be used as endpoint name, otherwise it will be registered under the
+        name that is it's class dotted path.
 
         :param path: HTTP path which resource serves
         :type path: str
