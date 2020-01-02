@@ -9,10 +9,3 @@ def endpoint(item):
         mname = item.__class__.__module__
         cqname = item.__class__.__qualname__
     return f'{mname}.{cqname}'
-
-
-class ResourceMixin:
-
-    @property
-    def endpoint(self):
-        return endpoint(self)
