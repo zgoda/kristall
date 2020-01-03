@@ -14,7 +14,7 @@ def get_options():
         '--no-reload', type=bool, default=False, help='Flag to turn off code autoreload'
     )
     parser.add_argument(
-        '--no-debug', type=bool, default=False,
+        '--debug', type=bool, default=False,
         help='Flag to turn off built-in debugger',
     )
     return parser.parse_args()

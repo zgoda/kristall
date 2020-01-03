@@ -47,13 +47,6 @@ dev_reqs = test_reqs + [
     'ipdb',
     'watchdog',
     'termcolor',
-    'flake8',
-    'flake8-builtins',
-    'flake8-bugbear',
-    'flake8-mutable',
-    'flake8-comprehensions',
-    'pep8-naming',
-    'dlint',
 ]
 
 setup(

@@ -1,6 +1,6 @@
 # Todos example for Kristall
 
-This is larger application example for Kristall that shows its intended usage.
+This is larger application example for Kristall that shows its intended usage as backend for Javascript UI. It uses [Marshmallow](https://pypi.org/project/marshmallow/) for data serialization and [Pony ORM](https://pypi.org/project/pony/) for data access layer.
 
 ## Backend
 
@@ -13,7 +13,7 @@ pip install -U pip wheel
 pip install -U -e .[dev]
 ```
 
-You can launch it as `todos run``. By default application runs on port 5000.
+You can launch it from terminal with `todos` with activated virtualenv. By default application runs on port 5000 and has enabled reloader. Werkzeug built-in debugger is by default turned off because application does not have its own UI, enable it with `todos --debug`. To be able to use it issue requests from web browser (Postman does not render HTML).
 
 ## Frontend
 
@@ -21,12 +21,15 @@ Frontend application is written in Javascript using [Preact UI framework](https:
 
 ```shell
 cd ui
-npm install`
+npm install
+```
 
-Frontend application is configured to proxy requests from Javascript code to backend running on port 5000. Run it with `npm`:
+Frontend application is configured to proxy requests from Javascript code to backend running on port 5000. Run it with `npm` in separate terminal window:
 
 ```shell
 npm run dev
 ```
 
-If you change port or host of your backend you will need to update frontend proxy configuration in `ui/preact.config.js`.
+Then with backend app running on http://127.0.0.1:5000 you may access the frontend app on http://127.0.0.1:8080. Dev server runs with hot reload.
+
+If you change port or host of your backend you will need to update frontend proxy configuration in `ui/preact.config.js`. This is also the right place if you want to change eg. frontend application port.
