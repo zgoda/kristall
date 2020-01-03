@@ -39,16 +39,16 @@ That's it for now.
 
 Future developments:
 
-* JWT-based resource access control
-* CORS support
+* JWT-based resource access control (optional)
+* CORS support (optional)
 
 What not
 --------
 
 * no decorator-based route registration - there's only one way to register
-  routes
-* no support for any other content type than ``application/json`` on both
-  input and output
+  routes and it is explicit
+* no built-in support for any other content type than ``application/json`` on
+  both input and output
 * no fancy JSON de/encoding, only builtin :mod:`json` is used in default JSON
   handling - use schema parsing/validating library eg.
   `Marshmallow <https://marshmallow.readthedocs.io/en/stable/>`_ or
@@ -71,6 +71,5 @@ Runtime dependencies
 
 * Python 3.7
 * Werkzeug 0.16
-* Click 7.0
 
 These are minimal versions of requirements.

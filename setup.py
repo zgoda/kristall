@@ -28,7 +28,6 @@ long_description = read('README.rst')
 
 base_reqs = [
     'Werkzeug',
-    'Click',
 ]
 
 test_reqs = [
