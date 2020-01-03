@@ -3,16 +3,12 @@ import { Component } from 'preact';
 class UserSelector extends Component {
   state = { users: [], value: '' };
 
-  componentDidMount() {
-    const url = '/api/user';
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => this.setState({ users: data || []}));
-  };
-
-  shouldComponentUpdate() {
-    return Boolean(this.state.users);
-  };
+  async componentDidMount() {
+    const users = await this.fetchUsers();
+    if (users.length !== this.state.users.length) {
+      this.setState({ users: users || [] });
+    }
+  }
 
   onInput = (e) => {
     this.setState({ value: e.target.value });
@@ -21,9 +17,16 @@ class UserSelector extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     if (this.state.value !== 'none') {
-      this.props.onUserSet(this.state.value);
+      this.props.onUserSet(this.state.value, false);
     }
   };
+
+  async fetchUsers() {
+    const url = '/api/user';
+    const res = await fetch(url);
+    const data = await res.json();
+    return data;    
+  }
 
   render(_, { value }) {
     return (
@@ -63,7 +66,7 @@ class UserForm extends Component {
       .then((res) => res.json())
       .then((data) => {
         this.setState({ user: data, name: '' });
-        this.props.onUserSet(data.pk);
+        this.props.onUserSet(data.pk, true);
       })
   };
 
@@ -82,14 +85,47 @@ class UserForm extends Component {
 
 class TodoList extends Component {
   state = { todos: [] };
+
+  render() {
+    return (
+      <div>
+        <h2>Items to do</h2>
+      </div>
+    );
+  };
+};
+
+function TodoForm() {
+  return (
+    <div>
+      <h2>Add new todo item</h2>
+    </div>
+  );
+};
+
+function UserInfo({ user }) {
+  if (user) {
+    return (
+      <div>
+        <p>Welcome, {user.name}</p>
+      </div>
+    );
+  } else {
+    return <div></div>
+  }
 };
 
 class Home extends Component {
-  state = { user: '' };
+  state = { user: {}, isNew: false };
 
-  handleUserSet = (user) => {
-    this.setState({ user: user });
-    console.log(user);
+  handleUserSet = (user, isNew) => {
+    const url = `/api/user/${user}`;
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ user: data, isNew: isNew });
+        console.log(user);    
+      })
   };
 
   render() {
@@ -98,7 +134,11 @@ class Home extends Component {
         <h1>Todos</h1>
         <UserSelector onUserSet={this.handleUserSet} />
         <UserForm onUserSet={this.handleUserSet} />
-        <TodoList user={user} />
+        <UserInfo user={this.state.user} />
+        <div class="flex two">
+          <TodoList user={this.state.user} />
+          <TodoForm />
+        </div>
       </div>
     );
   };
