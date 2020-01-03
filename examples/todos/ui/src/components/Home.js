@@ -6,8 +6,8 @@ class UserSelector extends Component {
   componentDidMount() {
     const url = '/api/user';
     fetch(url)
-      .then(res => res.json())
-      .then(data => this.setState({ users: data || []}));
+      .then((res) => res.json())
+      .then((data) => this.setState({ users: data || []}));
   };
 
   shouldComponentUpdate() {
@@ -44,7 +44,7 @@ class UserSelector extends Component {
 };
 
 class UserForm extends Component {
-  state = { user: '', name: '', createSuccess: false };
+  state = { user: '', name: '' };
 
   onInput = (e) => {
     this.setState({ name: e.target.value })
@@ -52,7 +52,19 @@ class UserForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.name);
+    const url = '/api/user';
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: this.state.name }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ user: data, name: '' });
+        this.props.onUserSet(data.pk);
+      })
   };
 
   render(_, { name }) {
@@ -66,7 +78,11 @@ class UserForm extends Component {
       </div>
     );
   }
-}
+};
+
+class TodoList extends Component {
+  state = { todos: [] };
+};
 
 class Home extends Component {
   state = { user: '' };
@@ -82,6 +98,7 @@ class Home extends Component {
         <h1>Todos</h1>
         <UserSelector onUserSet={this.handleUserSet} />
         <UserForm onUserSet={this.handleUserSet} />
+        <TodoList user={user} />
       </div>
     );
   };
