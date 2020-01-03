@@ -20,7 +20,8 @@ class UserCollectionResource:
         data = user_schema.loads(request.get_data())
         user = User(**data)
         db.commit()
-        return Response(status=201, headers={'Location': f'/user/{user.id}'})
+        data = user_schema.dumps(user)
+        return Response(data, headers={'Location': f'/user/{user.id}'})
 
 
 class UserItemResource:

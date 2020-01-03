@@ -20,7 +20,9 @@ class UserSelector extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.value);
+    if (this.state.value !== 'none') {
+      this.props.onUserSet(this.state.value);
+    }
   };
 
   render(_, { value }) {
@@ -41,11 +43,48 @@ class UserSelector extends Component {
   };
 };
 
-const Home = () => (
-	<div>
-		<h1>Todos</h1>
-    <UserSelector />
-	</div>
-);
+class UserForm extends Component {
+  state = { user: '', name: '', createSuccess: false };
+
+  onInput = (e) => {
+    this.setState({ name: e.target.value })
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state.name);
+  };
+
+  render(_, { name }) {
+    return (
+      <div>
+        <h2>Create new user</h2>
+        <form onSubmit={this.handleSubmit}>
+          <input type="text" value={name} onInput={this.onInput} />
+          <button type="submit">create</button>
+        </form>
+      </div>
+    );
+  }
+}
+
+class Home extends Component {
+  state = { user: '' };
+
+  handleUserSet = (user) => {
+    this.setState({ user: user });
+    console.log(user);
+  };
+
+  render() {
+    return (
+      <div>
+        <h1>Todos</h1>
+        <UserSelector onUserSet={this.handleUserSet} />
+        <UserForm onUserSet={this.handleUserSet} />
+      </div>
+    );
+  };
+};
 
 export default Home;

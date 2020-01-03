@@ -24,7 +24,7 @@ def main():
     opts = get_options()
     load_dotenv(find_dotenv())
     use_reloader = not opts.no_reload
-    use_debugger = not opts.no_debug
+    use_debugger = opts.debug
     from .app import create_app
     app = create_app()
     run_simple(
