@@ -1,8 +1,10 @@
 # Todos example for Kristall
 
-This is larger application example for Kristall that shows its intended usage as backend for Javascript UI. It uses [Marshmallow](https://pypi.org/project/marshmallow/) for data serialization and [Pony ORM](https://pypi.org/project/pony/) for data access layer.
+This is larger application example for Kristall that shows its intended usage as backend for Javascript UI.
 
 ## Backend
+
+Backend application uses [Marshmallow](https://pypi.org/project/marshmallow/) for data serialization and [Pony ORM](https://pypi.org/project/pony/) for data access layer.
 
 Create virtualenv with Python>=3.7 and install backend code:
 
@@ -13,7 +15,7 @@ pip install -U pip wheel
 pip install -U -e .[dev]
 ```
 
-You can launch it from terminal with `todos` with activated virtualenv. By default application runs on port 5000 and has enabled reloader. Werkzeug built-in debugger is by default turned off because application does not have its own UI, enable it with `todos --debug`. To be able to use it issue requests from web browser (Postman does not render HTML).
+Then with active virtualenv you can launch it from terminal with simple comand `todos` (`setup.py` registers console endpoint). By default application runs on port 5000 and has enabled reloader. Werkzeug built-in debugger is by default turned off because application does not have its own UI, enable it with `todos --debug`. To be able to use it issue requests from web browser (tools like Postman do not render HTML). Run `todos --help` to learn other command line options.
 
 ## Frontend
 
