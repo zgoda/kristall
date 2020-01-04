@@ -33,7 +33,7 @@ class UserSelector extends Component {
 };
 
 class UserForm extends Component {
-  state = { user: '', name: '' };
+  state = { name: '' };
 
   onInput = (e) => {
     this.setState({ name: e.target.value })
@@ -51,7 +51,6 @@ class UserForm extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        this.setState({ user: data, name: '' });
         this.props.onUserSet(data.pk, true);
       })
   };
@@ -69,15 +68,34 @@ class UserForm extends Component {
   }
 };
 
-class TodoList extends Component {
-  state = { todos: [] };
+const TodoItem = ({ item }) => (
+  <div>
+    <article class="card">
+      <header>
+        <h3>{item.title}</h3>
+      </header>
+      <section>{item.description}</section>
+      <footer><button class="pseudo">Show details</button></footer>
+    </article>
+  </div>
+);
 
-  render() {
+function TodoList({ user }) {
+  if (user.todos) {
     return (
       <div>
         <h2>Items to do</h2>
+        {user.todos.map((item) => (
+          <TodoItem key={item.pk} item={item} />
+        ))}
       </div>
-    );
+    )
+  } else {
+    return (
+      <div>
+        <h2>Nothing there yet</h2>
+      </div>
+    )
   };
 };
 
@@ -90,15 +108,15 @@ function TodoForm() {
 };
 
 function UserInfo({ user }) {
-  if (user) {
+  if (Object.entries(user).length === 0 && user.constructor === Object) {
+    return <div></div>
+  } else {
     return (
       <div>
         <p>Welcome, {user.name}</p>
       </div>
     );
-  } else {
-    return <div></div>
-  }
+  };
 };
 
 class Home extends Component {
@@ -116,13 +134,14 @@ class Home extends Component {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        this.setState({ user: data, isNew: isNew });
+        let state = { user: data, isNew: isNew };
         if (isNew) {
           let users = [... this.state.users];
           users.push(data);
           users.sort((a, b) => a.name.localeCompare(b.name));
-          this.setState({ users: users });
+          state.users = users;
         }
+        this.setState(state);
         console.log(user);    
       })
   };

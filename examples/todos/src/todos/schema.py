@@ -7,7 +7,8 @@ class UserSchema(Schema):
     pk = fields.Int(attribute='id')
     name = fields.Str(required=True)
     todos = fields.Nested(
-        'TodoSchema', dump_only=True, many=True, only=['pk', 'title', 'done']
+        'TodoSchema', dump_only=True, many=True,
+        only=['pk', 'title', 'description', 'done'],
     )
 
     @post_dump

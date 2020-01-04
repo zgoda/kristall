@@ -54,6 +54,17 @@ class UserTodoCollectionResource:
         return Response(status=201, headers={'Location': f'/todo/{todo.id}'})
 
 
+class TodoItem:
+
+    @db_session
+    def get(self, request: Request, todo_id: int) -> str:
+        todo = Todo.get(id=todo_id)
+        if not todo:
+            raise NotFound(description='')
+        return todo_schema.dumps(todo)
+
+
 user_collection = UserCollectionResource()
 user_item = UserItemResource()
 user_todo_collection = UserTodoCollectionResource()
+todo_item = TodoItem()
