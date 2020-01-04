@@ -1,14 +1,7 @@
 import { Component } from 'preact';
 
 class UserSelector extends Component {
-  state = { users: [], value: '' };
-
-  async componentDidMount() {
-    const users = await this.fetchUsers();
-    if (users.length !== this.state.users.length) {
-      this.setState({ users: users || [] });
-    }
-  }
+  state = { value: '' };
 
   onInput = (e) => {
     this.setState({ value: e.target.value });
@@ -21,21 +14,14 @@ class UserSelector extends Component {
     }
   };
 
-  async fetchUsers() {
-    const url = '/api/user';
-    const res = await fetch(url);
-    const data = await res.json();
-    return data;    
-  }
-
-  render(_, { value }) {
+  render({ users }, { value }) {
     return (
       <div>
         <h2>Select user</h2>
         <form onSubmit={this.handleSubmit}>
           <select value={value} onInput={this.onInput}>
             <option key="none" value="none">---</option>
-            {this.state.users.map(user => (
+            {users.map(user => (
             <option key={user.pk} value={user.pk}>{user.name}</option>
             ))}
           </select>
@@ -116,7 +102,14 @@ function UserInfo({ user }) {
 };
 
 class Home extends Component {
-  state = { user: {}, isNew: false };
+  state = { user: {}, isNew: false, users: [], todos: [] };
+
+  async componentDidMount() {
+    const url = '/api/user';
+    const resp = await fetch(url);
+    const data = await resp.json();
+    this.setState({ users: data });
+  }
 
   handleUserSet = (user, isNew) => {
     const url = `/api/user/${user}`;
@@ -124,6 +117,12 @@ class Home extends Component {
       .then((res) => res.json())
       .then((data) => {
         this.setState({ user: data, isNew: isNew });
+        if (isNew) {
+          let users = [... this.state.users];
+          users.push(data);
+          users.sort((a, b) => a.name.localeCompare(b.name));
+          this.setState({ users: users });
+        }
         console.log(user);    
       })
   };
@@ -132,7 +131,7 @@ class Home extends Component {
     return (
       <div>
         <h1>Todos</h1>
-        <UserSelector onUserSet={this.handleUserSet} />
+        <UserSelector onUserSet={this.handleUserSet} users={this.state.users} />
         <UserForm onUserSet={this.handleUserSet} />
         <UserInfo user={this.state.user} />
         <div class="flex two">
