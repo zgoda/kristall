@@ -1,3 +1,4 @@
+from datetime import datetime
 from pony.orm import db_session
 from werkzeug.exceptions import NotFound
 
@@ -50,8 +51,13 @@ class UserTodoCollectionResource:
             raise NotFound(description='')
         data = todo_schema.loads(request.get_data())
         todo = Todo(user=user, **data)
+        if todo.done and not todo.resolved:
+            todo.resolved = datetime.utcnow()
         db.commit()
-        return Response(status=201, headers={'Location': f'/todo/{todo.id}'})
+        return Response(
+            todo_schema.dumps(todo), status=201,
+            headers={'Location': f'/todo/{todo.id}'},
+        )
 
 
 class TodoItem:

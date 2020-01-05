@@ -75,7 +75,10 @@ const TodoItem = ({ item }) => (
         <h3>{item.title}</h3>
       </header>
       <section>{item.description}</section>
-      <footer><button class="pseudo">Show details</button></footer>
+      <footer>
+        <button class="pseudo">Show details</button>
+        <button>Resolve</button>
+      </footer>
     </article>
   </div>
 );
@@ -99,12 +102,74 @@ function TodoList({ user }) {
   };
 };
 
-function TodoForm() {
-  return (
-    <div>
-      <h2>Add new todo item</h2>
-    </div>
-  );
+const TodoDetail = () => (
+  <div>
+    <h2>Item details</h2>
+  </div>
+)
+
+class TodoForm extends Component {
+  state = { item: {} };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const url = `/api/user/${this.props.user.pk}/todo`;
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.state.item),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ item: data });
+      });
+  }
+
+  onInput = (e) => {
+    let item = Object.assign({}, this.state.item);
+    item[e.target.name] = e.target.value;
+    this.setState({ item: item });
+  };
+
+  toggleDone = (_) => {
+    let item = Object.assign({}, this.state.item);
+    item.done = !item.done;
+    this.setState({ item: item });
+  }
+
+  render() {
+    return (
+      <div>
+        <h2>Add new todo item</h2>
+        <form onSubmit={this.handleSubmit}>
+          <div class="flex two grow">
+            <div>
+              <label for="title">Title</label>
+            </div>
+            <div class="four-fifth">
+              <input type="text" name="title" value={this.state.item.title} onInput={this.onInput} />
+            </div>
+            <div>
+              <label for="description">Description</label>
+            </div>
+            <div class="four-fifth">
+              <textarea name="description" value={this.state.item.description} onInput={this.onInput} />
+            </div>
+            <div></div>
+            <div class="four-fifth">
+              <label>
+                <input type="checkbox" checked={this.state.item.done} onClick={this.toggleDone} />
+                <span class="checkable">Done</span>
+              </label>
+            </div>
+          </div>
+          <button type="submit">Save</button>
+        </form>
+      </div>
+    );
+  };
 };
 
 function UserInfo({ user }) {
@@ -140,10 +205,13 @@ class Home extends Component {
           users.push(data);
           users.sort((a, b) => a.name.localeCompare(b.name));
           state.users = users;
-        }
+        };
         this.setState(state);
-        console.log(user);    
-      })
+      });
+  };
+
+  handleTodoCreated = (todo) => {
+    console.log(todo);
   };
 
   render() {
@@ -154,8 +222,11 @@ class Home extends Component {
         <UserForm onUserSet={this.handleUserSet} />
         <UserInfo user={this.state.user} />
         <div class="flex two">
-          <TodoList user={this.state.user} />
-          <TodoForm />
+          <div class="flex one">
+            <TodoList user={this.state.user} />
+            <TodoDetail />
+          </div>
+          <TodoForm user={this.state.user} />
         </div>
       </div>
     );

@@ -11,10 +11,11 @@ def get_options():
     )
     parser.add_argument('--port', type=int, default=5000, help='Port number')
     parser.add_argument(
-        '--no-reload', type=bool, default=False, help='Flag to turn off code autoreload'
+        '--no-reload', action='store_true', default=False,
+        help='Flag to turn off code autoreload',
     )
     parser.add_argument(
-        '--debug', type=bool, default=False,
+        '--debug', action='store_true', default=False,
         help='Flag to turn off built-in debugger',
     )
     return parser.parse_args()

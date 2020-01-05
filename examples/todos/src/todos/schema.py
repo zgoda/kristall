@@ -13,7 +13,8 @@ class UserSchema(Schema):
 
     @post_dump
     def sort_todos(self, obj, *args, **kwargs):
-        obj['todos'].sort(key=operator.itemgetter('title'))
+        if 'todos' in obj:
+            obj['todos'].sort(key=operator.itemgetter('title'))
         return obj
 
 
