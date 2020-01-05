@@ -76,8 +76,8 @@ const TodoItem = ({ item }) => (
       </header>
       <section>{item.description}</section>
       <footer>
-        <button class="pseudo">Show details</button>
-        <button>Resolve</button>
+        <button>Show details</button>
+        <button class="dangerous">Mark as done</button>
       </footer>
     </article>
   </div>
@@ -123,7 +123,7 @@ class TodoForm extends Component {
     })
       .then((res) => res.json())
       .then((data) => {
-        this.setState({ item: data });
+        this.props.onTodoCreated(data);
       });
   }
 
@@ -226,7 +226,7 @@ class Home extends Component {
             <TodoList user={this.state.user} />
             <TodoDetail />
           </div>
-          <TodoForm user={this.state.user} />
+          <TodoForm user={this.state.user} onTodoCreated={this.handleTodoCreated} />
         </div>
       </div>
     );
