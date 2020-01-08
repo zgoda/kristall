@@ -139,7 +139,7 @@ class TodoForm extends Component {
     this.setState({ item: item });
   }
 
-  render() {
+  render(_, { item }) {
     return (
       <div>
         <h2>Add new todo item</h2>
@@ -149,18 +149,18 @@ class TodoForm extends Component {
               <label for="title">Title</label>
             </div>
             <div class="four-fifth">
-              <input type="text" name="title" value={this.state.item.title} onInput={this.onInput} />
+              <input type="text" name="title" value={item.title} onInput={this.onInput} />
             </div>
             <div>
               <label for="description">Description</label>
             </div>
             <div class="four-fifth">
-              <textarea name="description" value={this.state.item.description} onInput={this.onInput} />
+              <textarea name="description" value={item.description} onInput={this.onInput} />
             </div>
             <div></div>
             <div class="four-fifth">
               <label>
-                <input type="checkbox" checked={this.state.item.done} onClick={this.toggleDone} />
+                <input type="checkbox" checked={item.done} onClick={this.toggleDone} />
                 <span class="checkable">Done</span>
               </label>
             </div>
@@ -214,19 +214,19 @@ class Home extends Component {
     console.log(todo);
   };
 
-  render() {
+  render(_, { user, users }) {
     return (
       <div>
         <h1>Todos</h1>
-        <UserSelector onUserSet={this.handleUserSet} users={this.state.users} />
+        <UserSelector onUserSet={this.handleUserSet} users={users} />
         <UserForm onUserSet={this.handleUserSet} />
-        <UserInfo user={this.state.user} />
+        <UserInfo user={user} />
         <div class="flex two">
           <div class="flex one">
-            <TodoList user={this.state.user} />
+            <TodoList user={user} />
             <TodoDetail />
           </div>
-          <TodoForm user={this.state.user} onTodoCreated={this.handleTodoCreated} />
+          <TodoForm user={user} onTodoCreated={this.handleTodoCreated} />
         </div>
       </div>
     );
