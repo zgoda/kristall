@@ -56,3 +56,13 @@ class TestApplication:
             return Response(json.dumps({'message': 'fail'}), status=code)
         app.add_error_handler(500, handler)
         assert len(app._error_handlers) == 1
+
+    def test_default_error_handler_with_message(self, app):
+        rv = app.default_error_handler(500, description='fail')
+        assert rv.status_code == 500
+        assert json.loads(rv.get_data().decode('utf-8')) == {'message': 'fail'}
+
+    def test_default_error_handler_no_message(self, app):
+        rv = app.default_error_handler(500)
+        assert rv.status_code == 500
+        assert len(rv.get_data()) == 0
