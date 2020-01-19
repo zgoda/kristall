@@ -1,6 +1,18 @@
 Kristall
 ========
 
+.. image:: https://travis-ci.com/zgoda/kristall.svg?branch=master
+    :target: https://travis-ci.com/zgoda/kristall
+    :alt: Travis CI
+
+.. image:: https://codecov.io/gh/zgoda/kristall/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/zgoda/kristall
+    :alt: CodeCov
+
+.. image:: https://www.codefactor.io/repository/github/zgoda/kristall/badge
+    :target: https://www.codefactor.io/repository/github/zgoda/kristall
+    :alt: CodeFactor
+
 Lightweight *web framework*
 (`wink, wink <https://www.youtube.com/watch?v=dlDXVI6uM78>`_)
 for building APIs and backends.
