@@ -5,13 +5,13 @@ python:
   - "3.8"
 install:
   - pip install -q -U pip wheel
+  - pip install -q -U codecov
   - pip install -q -U -e .[test]
 script:
-  - pytest --cov-branch --cov-report xml --cov=kristall tests
+  - pytest --cov-branch --cov=kristall tests
   - python setup.py -q sdist bdist_wheel
 after_success:
-  - curl https://deepsource.io/cli | sh
-  - ./bin/deepsource report --analyzer test-coverage --key python --value-file ./coverage.xml
+  - codecov
 deploy:
   - provider: releases
     api_key: $GH_TOKEN
