@@ -42,7 +42,7 @@ class Application:
         self._error_handlers = {}
 
     def add_resource(self, path: str, resource: object):
-        """Register resource under specified path. The resource is and
+        """Register resource under specified path. The resource is an
         instance that is expected to provide methods that correspond to HTTP
         words. If the instance provides :attr:`endpoint` attribute the it will
         be used as endpoint name, otherwise it will be registered under the

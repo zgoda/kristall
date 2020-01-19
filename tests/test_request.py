@@ -11,8 +11,10 @@ class TestRequest:
 
     @pytest.fixture
     def custom_decoder(self):
+
         class CustomDecoder(json.JSONDecoder):
             pass
+
         return CustomDecoder
 
     def test_create_default(self):
