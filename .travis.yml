@@ -9,6 +9,9 @@ install:
 script:
   - pytest --cov-branch --cov-report xml --cov=kristall tests
   - python setup.py -q sdist bdist_wheel
+after_success:
+  - curl https://deepsource.io/cli | sh
+  - ./bin/deepsource report --analyzer test-coverage --key python --value-file ./coverage.xml
 deploy:
   - provider: releases
     api_key: $GH_TOKEN

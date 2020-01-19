@@ -75,6 +75,7 @@ setup(
     tests_require=test_reqs,
     extras_require={
         'dev': dev_reqs,
+        'test': test_reqs,
     },
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
