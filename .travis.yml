@@ -1,0 +1,20 @@
+language: python
+cache: pip
+python:
+  - "3.7"
+  - "3.8"
+install:
+  - pip install -q -U pip wheel
+  - pip install -q -U -e .[test]
+script:
+  - pytest --cov-branch --cov-report xml --cov=kristall tests
+  - python setup.py -q sdist bdist_wheel
+deploy:
+  - provider: releases
+    api_key: $GH_TOKEN
+    cleanup: false
+    file_glob: true
+    file: dist/*
+    on:
+      tags: true
+      python: "3.8"
