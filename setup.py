@@ -66,6 +66,7 @@ setup(
     author_email='jarek.zgoda@gmail.com',
     url='https://github.com/zgoda/kristall',
     long_description=long_description,
+    long_description_content_type='text/x-rst',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,

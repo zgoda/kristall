@@ -61,7 +61,7 @@ What not
   routes and it is explicit
 * no built-in support for any other content type than ``application/json`` on
   both input and output
-* no fancy JSON de/encoding, only builtin :mod:`json` is used in default JSON
+* no fancy JSON de/encoding, only builtin ``json`` module is used in default JSON
   handling - use schema parsing/validating library eg.
   `Marshmallow <https://marshmallow.readthedocs.io/en/stable/>`_ or
   `Colander <https://docs.pylonsproject.org/projects/colander/en/stable/>`_ if
