@@ -1,7 +1,7 @@
 import json
-from typing import Callable, Iterator, Optional
+from typing import Callable, Iterator
 
-from werkzeug.exceptions import HTTPException, MethodNotAllowed
+from werkzeug.exceptions import HTTPException
 from werkzeug.routing import Map, Rule
 from werkzeug.wrappers import Response as WerkzeugResponse
 
@@ -39,7 +39,6 @@ class Application:
     def __init__(self):
         self.url_map = Map()
         self._resource_cache = {}
-        self._error_handlers = {}
 
     def add_resource(self, path: str, resource: object):
         """Register resource under specified path. The resource is an
@@ -65,26 +64,6 @@ class Application:
         self.url_map.add(Rule(path, endpoint=endpoint, methods=resource_methods))
         self._resource_cache[endpoint] = resource
 
-    def add_error_handler(self, code: int, handler: Callable, *args, **kwargs):
-        """Register callable as error handler for specific HTTP response code.
-        Such handler should finally return Response instance.
-
-        :param code: HTTP response code
-        :type code: int
-        :param handler: callable that will be used to handle specific code
-        :type handler: Callable
-        """
-        self._error_handlers[code] = (handler, args, kwargs)
-
-    def default_error_handler(
-                self, code: int, description: Optional[str] = None, *args, **kwargs
-            ) -> Response:
-        if description:
-            msg = json.dumps({'message': description})
-        else:
-            msg = ''
-        return self.response_class(msg, status=code)
-
     def dispatch(self, request: Request) -> Response:
         """Dispatch and service HTTP request.
 
@@ -99,26 +78,15 @@ class Application:
         try:
             endpoint, values = adapter.match()
             resource = self._resource_cache[endpoint]
-            try:
-                handler = getattr(resource, request.method.lower())
-            except AttributeError:
-                raise MethodNotAllowed()
+            handler = getattr(resource, request.method.lower())
             result = handler(request, **values)
-            if isinstance(result, WerkzeugResponse):
-                return result
-            if isinstance(result, str):
-                return self.response_class(result)
-            return self.response_class(json.dumps(result, cls=self.json_encoder))
         except HTTPException as e:
-            code = e.code
-            if code is not None:
-                description = None
-                handler_info = self._error_handlers.get(code)
-                if handler_info is None:
-                    return self.default_error_handler(code, description)
-                handler, args, kwargs = handler_info
-                return handler(code, description, *args, **kwargs)
             return e
+        if isinstance(result, WerkzeugResponse):
+            return result
+        if isinstance(result, str):
+            return self.response_class(result)
+        return self.response_class(json.dumps(result, cls=self.json_encoder))
 
     def wsgi_app(self, environ: dict, start_response: Callable) -> Response:
         """Wrapper over WSGI application that exposes WSGI application for

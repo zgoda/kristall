@@ -1,6 +1,8 @@
 import json
 
 import pytest
+from werkzeug.exceptions import SecurityError
+from werkzeug.test import Client
 
 from kristall.application import Application
 from kristall.request import Request
@@ -9,7 +11,6 @@ from kristall.response import Response
 
 def test_create():
     app = Application()
-    assert app._error_handlers == {}
     assert app._resource_cache == {}
     assert len(app.url_map._rules) == 0
     assert app.json_encoder == json.JSONEncoder
@@ -20,11 +21,11 @@ def test_create():
 
 class TestApplication:
 
-    @pytest.fixture
-    def app(self):
-        return Application()
+    @pytest.fixture(autouse=True)
+    def set_up(self):
+        self.app = Application()
 
-    def test_add_simple_resource_object(self, app):
+    def test_add_simple_resource_object(self):
 
         class Resource:
 
@@ -32,10 +33,10 @@ class TestApplication:
                 return {'message': 'test'}
 
         res = Resource()
-        app.add_resource('/endpoint', res)
-        assert len(app.url_map._rules) == 1
+        self.app.add_resource('/endpoint', res)
+        assert len(self.app.url_map._rules) == 1
 
-    def test_add_object_with_endpoint(self, app):
+    def test_add_object_with_endpoint(self):
 
         class Resource:
 
@@ -45,24 +46,99 @@ class TestApplication:
                 return {'message': 'test'}
 
         res = Resource()
-        app.add_resource('/endpoint', res)
-        assert len(app.url_map._rules) == 1
-        assert res.endpoint in app._resource_cache
-        rule = app.url_map._rules[0]
+        self.app.add_resource('/endpoint', res)
+        assert len(self.app.url_map._rules) == 1
+        assert res.endpoint in self.app._resource_cache
+        rule = self.app.url_map._rules[0]
         assert rule.methods == {'GET', 'HEAD'}
 
-    def test_add_error_handler(self, app):
-        def handler(code, *args, **kwargs):
-            return Response(json.dumps({'message': 'fail'}), status=code)
-        app.add_error_handler(500, handler)
-        assert len(app._error_handlers) == 1
+    def test_wsgi_app(self):
 
-    def test_default_error_handler_with_message(self, app):
-        rv = app.default_error_handler(500, description='fail')
-        assert rv.status_code == 500
-        assert json.loads(rv.get_data().decode('utf-8')) == {'message': 'fail'}
+        class Resource:
 
-    def test_default_error_handler_no_message(self, app):
-        rv = app.default_error_handler(500)
-        assert rv.status_code == 500
-        assert len(rv.get_data()) == 0
+            def get(self, request):
+                return {'message': 'test'}
+
+        self.app.add_resource('/endpoint', Resource())
+        client = Client(self.app.wsgi_app, Response)
+        rv = client.get('/endpoint')
+        assert rv.status_code == 200
+
+    def test_call(self):
+
+        class Resource:
+
+            def get(self, request):
+                return {'message': 'test'}
+
+        self.app.add_resource('/endpoint', Resource())
+        client = Client(self.app, Response)
+        rv = client.get('/endpoint')
+        assert rv.status_code == 200
+
+
+class TestDispatch:
+
+    @pytest.fixture(autouse=True)
+    def set_up(self):
+        self.app = Application()
+
+    def test_not_found(self):
+
+        class Resource:
+
+            def get(self, request):
+                return {'message': 'test'}
+
+        self.app.add_resource('/endpoint', Resource())
+        client = Client(self.app, Response)
+        rv = client.get('/somewhere')
+        assert rv.status_code == 404
+
+    def test_method_not_allowed(self):
+
+        class Resource:
+
+            def get(self, request):
+                return {'message': 'test'}
+
+        self.app.add_resource('/endpoint', Resource())
+        client = Client(self.app, Response)
+        rv = client.post('/endpoint', data={})
+        assert rv.status_code == 405
+
+    def test_error_without_code(self):
+
+        class Resource:
+
+            def get(self, request):
+                raise SecurityError()
+
+        self.app.add_resource('/endpoint', Resource())
+        client = Client(self.app, Response)
+        rv = client.get('/endpoint')
+        assert rv.status_code == 400
+
+    def test_resource_return_response(self):
+
+        class Resource:
+
+            def get(self, request):
+                return Response(json.dumps({'message': 'test'}))
+
+        self.app.add_resource('/endpoint', Resource())
+        client = Client(self.app, Response)
+        rv = client.get('/endpoint')
+        assert rv.status_code == 200
+
+    def test_resource_return_str(self):
+
+        class Resource:
+
+            def get(self, request):
+                return json.dumps({'message': 'test'})
+
+        self.app.add_resource('/endpoint', Resource())
+        client = Client(self.app, Response)
+        rv = client.get('/endpoint')
+        assert rv.status_code == 200
