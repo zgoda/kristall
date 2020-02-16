@@ -42,7 +42,6 @@ dev_reqs = test_reqs + [
     'ipython',
     'ipdb',
     'watchdog',
-    'termcolor',
     'flake8',
     'flake8-builtins',
     'flake8-bugbear',
