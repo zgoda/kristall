@@ -49,11 +49,10 @@ dev_reqs = test_reqs + [
     'flake8-comprehensions',
     'pep8-naming',
     'dlint',
-    'towncrier',
     'Sphinx',
-    'sphinx-autodoc-typehints',
     'python-dotenv',
     'doc8',
+    'rstcheck',
 ]
 
 

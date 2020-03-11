@@ -16,9 +16,9 @@ Kristall
 Lightweight *web framework*
 (`wink, wink <https://www.youtube.com/watch?v=dlDXVI6uM78>`_)
 for building APIs and backends.
-Reasonably fast in execution, developer friendly. If you need gazillions of
-requests served by single process in a second then there are better options
-than Kristall. I'm happy when it's not slower than Flask.
+Reasonably fast in execution, quite fast for development. If you need
+gazillions of requests served by single process in a second then there are
+better options than Kristall. I'm happy when it's not slower than Flask.
 
 Why
 ---
@@ -30,10 +30,11 @@ Flask. Sure, there are
 `Flask <https://palletsprojects.com/p/flask/>`_ extensions that make writing
 REST APIs simpler like
 `Flask-RESTFul <https://flask-restful.readthedocs.io/en/latest/>`_ and
-`Flask-RESTPlus <https://flask-restplus.readthedocs.io/en/stable/>`_ but they
+`Flask-RESTX <https://flask-restx.readthedocs.io/en/latest/>`_ but they
 are built on top of Flask and do many extra things that are better done by
 others, or not done at all. I wanted something that is somewhere in between
-Falcon and Flask. Simplicity of Falcon with convenience of Flask.
+`Falcon <https://falcon.readthedocs.io/en/stable/>`_ and Flask. Simplicity of
+Falcon with convenience of Flask.
 
 But since not everything sucks in Falcon I'd grab some ideas, like
 resourceful routing without need to subclass specific ``Resource`` base class,
