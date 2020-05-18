@@ -18,7 +18,6 @@ _version_re = re.compile(r"__version\s+=\s+(.*)")
 
 def find_version(*where):
     return str(ast.literal_eval(_version_re.search(read(*where)).group(1)))
-    raise RuntimeError('Unable to find version string.')
 
 
 long_description = read('README.rst')
