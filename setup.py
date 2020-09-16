@@ -20,12 +20,6 @@ def find_version(*where):
     return str(ast.literal_eval(_version_re.search(read(*where)).group(1)))
 
 
-long_description = read('README.rst')
-
-base_reqs = [
-    'Werkzeug',
-]
-
 test_reqs = [
     'pytest',
     'pytest-cov',
@@ -41,7 +35,6 @@ dev_reqs = test_reqs + [
     'flake8',
     'flake8-builtins',
     'flake8-bugbear',
-    'flake8-mutable',
     'flake8-comprehensions',
     'pep8-naming',
     'dlint',
@@ -58,14 +51,16 @@ setup(
     author='Jarek Zgoda',
     author_email='jarek.zgoda@gmail.com',
     url='https://github.com/zgoda/kristall',
-    long_description=long_description,
+    long_description=read('README.rst'),
     long_description_content_type='text/x-rst',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
     python_requires='~=3.7',
     zip_safe=False,
-    install_requires=base_reqs,
+    install_requires=[
+        'Werkzeug'
+    ],
     tests_require=test_reqs,
     extras_require={
         'dev': dev_reqs,
