@@ -39,6 +39,8 @@ class Application:
     def __init__(self):
         self.url_map = Map()
         self._resource_cache = {}
+        self._before_request = []
+        self._after_request = []
 
     def add_resource(self, path: str, resource: object):
         """Register resource under specified path. The resource is an
@@ -64,6 +66,27 @@ class Application:
         self.url_map.add(Rule(path, endpoint=endpoint, methods=resource_methods))
         self._resource_cache[endpoint] = resource
 
+    def add_before_request(self, func: Callable):
+        """Add function to list of callables called before handling request.
+        These functions should accept request object as parameter. These
+        functions should either return None or instance of Response that will
+        be returned as result of dispatch.
+
+        :param func: callable to be called before request
+        :type func: Callable
+        """
+        self._before_request.append(func)
+
+    def add_after_request(self, func: Callable):
+        """Add function to list of callables called after handling request.
+        These functions should accept request and handler result, and return
+        either None or thing that will be returned from dispatch.
+
+        :param func: callable to be called after request
+        :type func: Callable
+        """
+        self._after_request.append(func)
+
     def dispatch(self, request: Request) -> Response:
         """Dispatch and service HTTP request.
 
@@ -79,7 +102,16 @@ class Application:
             endpoint, values = adapter.match()
             resource = self._resource_cache[endpoint]
             handler = getattr(resource, request.method.lower())
+            for func in self._before_request:
+                result = func(request)
+                if result is not None:
+                    return result
             result = handler(request, **values)
+            for func in self._after_request:
+                ar_result = func(request, result)
+                if ar_result is not None:
+                    result = ar_result
+                    break
         except HTTPException as e:
             return e
         if isinstance(result, WerkzeugResponse):

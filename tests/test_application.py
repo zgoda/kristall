@@ -22,7 +22,7 @@ def test_create():
 class TestApplication:
 
     @pytest.fixture(autouse=True)
-    def set_up(self):
+    def _set_up(self):
         self.app = Application()
 
     def test_add_simple_resource_object(self):
@@ -80,7 +80,7 @@ class TestApplication:
 class TestDispatch:
 
     @pytest.fixture(autouse=True)
-    def set_up(self):
+    def _set_up(self):
         self.app = Application()
 
     def test_not_found(self):

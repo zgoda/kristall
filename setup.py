@@ -23,6 +23,7 @@ def find_version(*where):
 test_reqs = [
     'pytest',
     'pytest-cov',
+    'pytest-mock',
 ]
 
 dev_reqs = test_reqs + [
@@ -36,6 +37,7 @@ dev_reqs = test_reqs + [
     'flake8-builtins',
     'flake8-bugbear',
     'flake8-comprehensions',
+    'flake8-pytest-style',
     'pep8-naming',
     'dlint',
     'Sphinx',
