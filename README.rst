@@ -1,13 +1,15 @@
 Kristall
 ========
 
-.. image:: https://travis-ci.com/zgoda/kristall.svg?branch=master
-    :target: https://travis-ci.com/zgoda/kristall
-    :alt: Travis CI
+.. image:: https://github.com/zgoda/kristall/workflows/Tests/badge.svg?branch=master
+    :target: https://github.com/zgoda/kristall/actions?query=workflow%3ATests
+    :alt: Tests
 
-.. image:: https://codecov.io/gh/zgoda/kristall/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/zgoda/kristall
-    :alt: CodeCov
+
+.. image:: https://coveralls.io/repos/github/zgoda/kristall/badge.svg?branch=master
+    :target: https://coveralls.io/github/zgoda/kristall?branch=master
+    :alt: Coveralls
+
 
 .. image:: https://www.codefactor.io/repository/github/zgoda/kristall/badge
     :target: https://www.codefactor.io/repository/github/zgoda/kristall
