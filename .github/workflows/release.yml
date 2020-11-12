@@ -19,6 +19,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
   build:
+    needs: analyse
     name: Build and release package to PyPI
     runs-on: ubuntu-20.04
     steps:
