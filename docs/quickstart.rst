@@ -1,8 +1,7 @@
 Quickstart
 ==========
 
-Kristall requires Python 3.7 or newer to work. Make sure it's installed and
-you can create virtualenvs with it.
+Kristall requires Python 3.7 or newer to work. Make sure it's installed and you can create virtualenvs with it.
 
 Installation
 ------------
