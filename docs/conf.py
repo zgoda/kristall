@@ -38,7 +38,7 @@ extensions = [
 
 intersphinx_mapping = {
     'python': ['https://docs.python.org/3', None],
-    'werkzeug': ['https://werkzeug.palletsprojects.com/en/0.16.x/', None]
+    'werkzeug': ['https://werkzeug.palletsprojects.com/en/1.0.x/', None]
 }
 
 # Add any paths that contain templates here, relative to this directory.

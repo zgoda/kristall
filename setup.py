@@ -53,6 +53,11 @@ setup(
     author='Jarek Zgoda',
     author_email='jarek.zgoda@gmail.com',
     url='https://github.com/zgoda/kristall',
+    project_urls={
+        'Documentation': 'https://kristall.readthedocs.io/',
+        'Source': 'https://github.com/zgoda/kristall',
+        'Issues': 'https://github.com/zgoda/kristall/issues',
+    },
     long_description=read('README.rst'),
     long_description_content_type='text/x-rst',
     packages=find_packages('src'),
@@ -63,7 +68,6 @@ setup(
     install_requires=[
         'Werkzeug'
     ],
-    tests_require=test_reqs,
     extras_require={
         'dev': dev_reqs,
         'test': test_reqs,
