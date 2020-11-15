@@ -26,13 +26,13 @@ Of course there are still plenty of others but let's be honest, the boom time fo
 
 All Flask add-ons (`Flask-RESTFul <https://github.com/flask-restful/flask-restful>`_, `Flask-RESTPlus <https://github.com/noirbizarre/flask-restplus>`_, `Flask-RESTX <https://github.com/python-restx/flask-restx>`_, check news who's last in this chain) have all this Flask cruft that helps so much when building Web applications but is not very usable when building APIs, then add their own cruft like bare bones request values parsing and validation which falls behind other libraries in terms of both features and performance. Seriously, people, use `Colander <https://pypi.org/project/colander/>`_ or `Marshmallow <https://pypi.org/project/marshmallow/>`_. But they both have one thing that's invaluable - it's familiarity of framework API. It's still Flask, and you write code like in any Flask based application.
 
-So why not `Falcon <https://github.com/falconry/falcon>`_? The developers decide on some features that are far from being common, friendly or even convenient. Not a big deal, but for many developers the idea of modifying passed response object in request handler may seem to be awkward. I guess this is the price you pay for that performance. Falcon is very good piece of software but it does not mean that it would fit everybody.
+So why not Falcon? The developers decided on some features that are far from being common, friendly or even convenient. Not a big deal, but for many developers the idea of modifying passed response object in request handler may seem to be awkward. I guess this is the price you pay for that performance. Falcon is very good piece of software but it does not mean that it would fit everybody.
 
 That's why Kristall is being developed. I want as much Flask in Falcon as I could get so there is a Werkzeug based framework with much smaller feature set than Flask but on par with Falcon.
 
 Why so minimalistic?
 --------------------
 
-Others will give you more out of the box but Kristall does not pose any limits for extending. In fact, I wrote it with extendability in mind. All provided classes are supposed to be used as bases for customizations - both :class:`~kristall.request.Request` and :class:`~kristall.response.Response` are just thin wrappers over Werkzeug's structures, and :class:`~kristall.application.Application` is simple glue over WSGI sapplication idea.
+Others will give you more out of the box but Kristall does not pose any limits for extending. In fact, I wrote it with extendability in mind. All provided classes are supposed to be used as bases for customizations - both :class:`~kristall.request.Request` and :class:`~kristall.response.Response` are just thin wrappers over Werkzeug's structures, and :class:`~kristall.application.Application` is simple glue over WSGI application idea.
 
 In this sense this is not a framework, where you'd expect to have many ready to use classes. It's still more of a toolbox that provides developer with building blocks to make his new application.
