@@ -6,7 +6,7 @@ insert_final_newline = true
 indent_style = space
 indent_size = 4
 
-[{*.json,*.yml,*.yaml,*.html,*.js,*.jinja}]
+[{*.json,*.yml,*.yaml,*.html,*.js,*.css,*.scss}]
 indent_size = 2
 
 [{Makefile,*.java,*.sh}]

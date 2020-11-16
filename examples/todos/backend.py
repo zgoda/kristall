@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from peewee import (
     BooleanField, CharField, DateTimeField, Model, SqliteDatabase, TextField,
@@ -7,6 +7,7 @@ from werkzeug.exceptions import NotFound
 from werkzeug.serving import run_simple
 
 from kristall.application import Application
+from kristall.response import Response
 
 sqlite_pragmas = {
     'journal_mode': 'wal',
@@ -39,13 +40,17 @@ class Todo(Model):
         database = db
 
     def as_dict(self):
-        return {
+        ret = {
             'title': self.title,
             'description': self.description,
-            'dateAdded': self.added.isoformat(),
+            'dateAdded': self.added.replace(tzinfo=timezone.utc).timestamp(),
             'isComplete': self.is_complete,
-            'dateCompleted': self.completed.isoformat(),
+            'dateCompleted': None
         }
+        if self.is_complete:
+            ts = self.completed.replace(tzinfo=timezone.utc).timestamp()
+            ret['dateCompleted'] = ts
+        return ret
 
 
 class TodoResource:
@@ -60,8 +65,14 @@ class TodoResource:
 
 class TodoCollectionResource:
 
+    def post(self, request):
+        data = request.get_json()
+        todo = Todo.create(**data)
+        return Response(status=201, headers={'Location': f'/todo/{todo.id}'})
+
     def get(self, request):
-        pass
+        todos = [t.as_dict() for t in Todo.select().order_by(Todo.added)]
+        return {'todos': todos}
 
 
 def make_app() -> Application:
