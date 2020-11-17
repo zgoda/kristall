@@ -43,12 +43,14 @@ class Todo(Model):
         ret = {
             'title': self.title,
             'description': self.description,
-            'dateAdded': self.added.replace(tzinfo=timezone.utc).timestamp(),
+            'dateAdded': round(
+                self.added.replace(tzinfo=timezone.utc).timestamp() * 1000
+            ),
             'isComplete': self.is_complete,
             'dateCompleted': None
         }
         if self.is_complete:
-            ts = self.completed.replace(tzinfo=timezone.utc).timestamp()
+            ts = round(self.completed.replace(tzinfo=timezone.utc).timestamp() * 1000)
             ret['dateCompleted'] = ts
         return ret
 

@@ -1,6 +1,8 @@
 const TodoForm = (() => {
   return (
-    <p>ToDo form</p>
+    <>
+      <h2>New thing to do</h2>
+    </>
   )
 });
 
