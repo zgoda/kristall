@@ -62,12 +62,27 @@ class TodoResource:
             raise NotFound()
         return todo.as_dict()
 
+    def put(self, request, todo_id):
+        try:
+            Todo.get_by_id(todo_id)
+        except Todo.DoesNotExist:
+            raise NotFound()
+        data = request.get_json()
+        data['is_complete'] = data.pop('isComplete', False)
+        if data['is_complete']:
+            data['completed'] = datetime.utcnow()
+        Todo.update(**data).where(Todo.id == todo_id).execute()
+        return Response(status=200, headers={'Location': f'/todo/{todo_id}'})
+
 
 class TodoCollectionResource:
 
     def post(self, request):
         data = request.get_json()
-        todo = Todo.create(**data)
+        is_complete = data.pop('isComplete', False)
+        if is_complete:
+            data['completed'] = datetime.utcnow()
+        todo = Todo.create(is_complete=is_complete, **data)
         return Response(status=201, headers={'Location': f'/todo/{todo.id}'})
 
     def get(self, request):
