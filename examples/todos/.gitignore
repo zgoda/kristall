@@ -3,6 +3,7 @@ node_modules
 /build
 /*.log
 package-lock.json
+size-plugin.json
 
 # Python
 __pycache__/

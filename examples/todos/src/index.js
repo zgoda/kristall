@@ -7,6 +7,7 @@ import { TodoForm } from './components/form';
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [selected, setSelected] = useState(0);
+  const [newTodo, setNewTodo] = useState(null);
 
   useEffect(() => {
     const url = '/api/todos';
@@ -34,7 +35,7 @@ export default function App() {
             <TodoItem todo={todos[selected]} />
           </div>
           <div class="cell">
-            <TodoForm />
+            <TodoForm setNewTodo={setNewTodo} />
           </div>
         </div>
       </div>
