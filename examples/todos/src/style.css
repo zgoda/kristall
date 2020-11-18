@@ -4,7 +4,7 @@
   --font-family-sans: 'Segoe UI', Ubuntu, Cantarell, 'Helvetica Neue', arial, sans-serif;
 }
 
-button svg {
+.button svg {
   vertical-align: middle;
   margin-right: 0.5rem;
 }

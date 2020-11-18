@@ -42,6 +42,7 @@ class Todo(Model):
 
     def as_dict(self):
         ret = {
+            'id': self.id,
             'title': self.title,
             'description': self.description,
             'dateAdded': round(

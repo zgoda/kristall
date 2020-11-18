@@ -26,17 +26,26 @@ export default function App() {
     setTodos(newTodos);
   });
 
+  const completeTodoHandler = (({ todo }) => {
+    let newTodos = todos.slice();
+    newTodos.forEach((item) => {
+      if (item.id === todo.id) {
+        item.isComplete = todo.isComplete;
+        item.dateCompleted = todo.dateCompleted;
+      }
+    });
+    setTodos(newTodos);
+  });
+
   return (
     <div class="container">
       <h1>My Things To Do</h1>
       <div class="row">
         <div class="col">
-          <div class="cell rowspan">
-            <TodoList todos={todos} setSelected={setSelected} />
-          </div>
+          <TodoList todos={todos} setSelected={setSelected} />
         </div>
         <div class="col">
-          <TodoItem todo={todos[selected]} />
+          <TodoItem todo={todos[selected]} completeHandler={completeTodoHandler} />
           <TodoForm setNewTodo={newTodoHandler} />
         </div>
       </div>
