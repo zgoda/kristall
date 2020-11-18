@@ -30,17 +30,17 @@ const TodoForm = (({ setNewTodo }) => {
     <>
       <h2>New thing to do</h2>
       <form onSubmit={submitHandler}>
-        <div>
+        <p>
           <label for="title">Title</label>
           <input type="text" name="title" value={title} onInput={(e) => setTitle(e.target.value)} />
-        </div>
-        <div>
+        </p>
+        <p>
           <label for="description">Description</label>
           <textarea name="description" onInput={(e) => setDescription(e.target.value)} value={description} />
-        </div>
-        <div>
-          <button type="submit"><Plus size={12} /> Add todo</button>
-        </div>
+        </p>
+        <p>
+          <button type="submit"><Plus size={16} /> Add todo</button>
+        </p>
       </form>
     </>
   )

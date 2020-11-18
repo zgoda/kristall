@@ -25,6 +25,7 @@
     "sirv-cli": "^1.0.8"
   },
   "dependencies": {
+    "chota": "^0.8.0",
     "preact": "^10.5.7",
     "preact-feather": "^4.1.0",
     "preact-render-to-string": "^5.1.12"

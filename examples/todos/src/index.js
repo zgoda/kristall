@@ -27,21 +27,17 @@ export default function App() {
   });
 
   return (
-    <div class="content">
+    <div class="container">
       <h1>My Things To Do</h1>
-      <div class="container">
-        <div class="column">
+      <div class="row">
+        <div class="col">
           <div class="cell rowspan">
             <TodoList todos={todos} setSelected={setSelected} />
           </div>
         </div>
-        <div class="column">
-          <div class="cell">
-            <TodoItem todo={todos[selected]} />
-          </div>
-          <div class="cell">
-            <TodoForm setNewTodo={newTodoHandler} />
-          </div>
+        <div class="col">
+          <TodoItem todo={todos[selected]} />
+          <TodoForm setNewTodo={newTodoHandler} />
         </div>
       </div>
     </div>

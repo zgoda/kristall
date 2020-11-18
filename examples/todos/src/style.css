@@ -1,27 +1,10 @@
-html, body {
-  font-family: 'Segoe UI', Ubuntu, Cantarell, 'Helvetica Neue', arial, sans-serif;
+@import url("../node_modules/chota/dist/chota.min.css");
+
+:root {
+  --font-family-sans: 'Segoe UI', Ubuntu, Cantarell, 'Helvetica Neue', arial, sans-serif;
 }
 
-.content {
-  padding: 2rem;
-}
-
-.container {
-  display: flex;
-  width: 100%;
-  flex-wrap: wrap;
-}
-
-.column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.cell {
-  flex: 1;
-}
-
-.cell.rowspan {
-  flex: 2;
+button svg {
+  vertical-align: middle;
+  margin-right: 0.5rem;
 }

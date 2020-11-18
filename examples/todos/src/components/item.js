@@ -22,7 +22,7 @@ const TodoItem = (({ todo }) => {
         <p>created: {added}</p>
         <p>is completed: <input type="checkbox" checked={todo.isComplete} onClick={checkboxClickHandler} /></p>
         <p>completion date: {completed}</p>
-        {!todo.isComplete && <p><button type="button"><CheckSquare size={12} /> Complete task</button></p>}
+        {!todo.isComplete && <p><button type="button" class="button secondary"><CheckSquare size={16} /> Complete task</button></p>}
       </>
     )
   }
