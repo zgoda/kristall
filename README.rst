@@ -36,15 +36,15 @@ That's it for now.
 
 Future developments:
 
-* JWT-based resource access control (optional)
-* CORS support (optional)
+* CORS support
+* JWT-based resource access control
 
 What not
 --------
 
 * no decorator-based route registration - there's only one way to register routes and it is explicit
 * no built-in support for any other content type than ``application/json`` on both input and output
-* no fancy JSON de/encoding, only builtin ``json`` module is used in default JSON handling - use schema parsing/validating library eg. `Marshmallow <https://marshmallow.readthedocs.io/en/stable/>`_ or `Colander <https://docs.pylonsproject.org/projects/colander/en/stable/>`_ if you need anything beyond that; default behaviour may be customised to some degree by providing JSON decoder and encoder classes
+* no fancy JSON de/encoding, only builtin ``json`` module is used in default JSON handling - use serialisation library eg. `Marshmallow <https://marshmallow.readthedocs.io/en/stable/>`_ or `Colander <https://docs.pylonsproject.org/projects/colander/en/stable/>`_ if you need anything beyond that; default behaviour may be customised to some degree by providing JSON decoder and encoder classes
 
 How
 ---
