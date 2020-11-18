@@ -1,6 +1,5 @@
 html, body {
-  font: 14px/1.21 Ubuntu, Cantarell, 'Helvetica Neue', arial, sans-serif;
-  font-weight: 400;
+  font-family: 'Segoe UI', Ubuntu, Cantarell, 'Helvetica Neue', arial, sans-serif;
 }
 
 .content {

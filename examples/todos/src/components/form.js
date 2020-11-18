@@ -21,7 +21,7 @@ const TodoForm = (({ setNewTodo }) => {
         console.log(data);
         setTitle('');
         setDescription('');
-        setNewTodo(data);
+        setNewTodo({ todo: data });
       })
       .catch((err) => console.error(err));
   })
@@ -36,7 +36,7 @@ const TodoForm = (({ setNewTodo }) => {
         </div>
         <div>
           <label for="description">Description</label>
-          <textarea name="description" onInput={(e) => setDescription(e.target.value)}>{description}</textarea>
+          <textarea name="description" onInput={(e) => setDescription(e.target.value)} value={description} />
         </div>
         <div>
           <button type="submit"><Plus size={12} /> Add todo</button>

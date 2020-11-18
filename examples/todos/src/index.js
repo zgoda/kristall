@@ -7,7 +7,6 @@ import { TodoForm } from './components/form';
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [selected, setSelected] = useState(0);
-  const [newTodo, setNewTodo] = useState(null);
 
   useEffect(() => {
     const url = '/api/todos';
@@ -15,11 +14,17 @@ export default function App() {
       .then((resp) => resp.json())
       .then((data) => {
         setTodos(data.todos);
-        if (todos.length > 0) {
+        if (data.todos.length > 0) {
           setSelected(0);
         }
       })
   }, []);
+
+  const newTodoHandler = (({ todo }) => {
+    let newTodos = todos.slice();
+    newTodos.push(todo);
+    setTodos(newTodos);
+  });
 
   return (
     <div class="content">
@@ -35,10 +40,10 @@ export default function App() {
             <TodoItem todo={todos[selected]} />
           </div>
           <div class="cell">
-            <TodoForm setNewTodo={setNewTodo} />
+            <TodoForm setNewTodo={newTodoHandler} />
           </div>
         </div>
       </div>
     </div>
   )
-};
+}
