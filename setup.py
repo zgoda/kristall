@@ -26,7 +26,11 @@ test_reqs = [
     'pytest-mock',
 ]
 
-dev_reqs = test_reqs + [
+doc_reqs = [
+    'Sphinx',
+]
+
+dev_reqs = test_reqs + doc_reqs + [
     'pip',
     'setuptools',
     'wheel',
@@ -40,7 +44,6 @@ dev_reqs = test_reqs + [
     'flake8-pytest-style',
     'pep8-naming',
     'dlint',
-    'Sphinx',
     'python-dotenv',
     'rstcheck',
 ]
@@ -70,6 +73,7 @@ setup(
     ],
     extras_require={
         'dev': dev_reqs,
+        'docs': doc_reqs,
         'test': test_reqs,
     },
     classifiers=[
