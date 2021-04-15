@@ -36,8 +36,7 @@ That's it for now.
 
 Future developments:
 
-* CORS support
-* JWT-based resource access control
+* CORS support (possibly based on my another project: `CORSLib <https://github.com/zgoda/corslib>`_)
 
 What not
 --------
