@@ -28,7 +28,7 @@ jobs:
       run: |
         pytest --cov-branch --cov-report xml --cov kristall tests
     - name: Coveralls report
-      if: matrix.python-version == 3.8
+      if: matrix.python-version == 3.9
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
