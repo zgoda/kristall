@@ -32,7 +32,7 @@ jobs:
         id: pip-cache-dir
         run: echo "::set-output name=dir::$(pip cache dir)"
       - name: Cache pip
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.2.2
         with:
           path: ${{ steps.pip-cache-dir.outputs.dir }}
           key: pip|3.8|${{ hashFiles('setup.py') }}
